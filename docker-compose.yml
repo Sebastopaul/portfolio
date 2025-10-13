@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres:18-alpine
+    container_name: portfolio-db
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - portfolio-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -h localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
+
+  web-back:
+    build: ./backend
+    container_name: portfolio-web-back
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${BACKEND_PORT}:8080"
+    volumes:
+      - ./backend/src:/workspace/src
+      - ./backend/build.gradle.kts:/workspace/build.gradle.kts
+      - ./backend/settings.gradle.kts:/workspace/settings.gradle.kts
+    networks:
+      - portfolio-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: ${APP_ENV}
+
+  web-front:
+    build: ./frontend/app
+    container_name: portfolio-web-front
+    depends_on:
+      - web-back
+    ports:
+      - "${FRONTEND_PORT}:4200"
+    volumes:
+      - ./frontend/app:/usr/src/app
+    networks:
+      - portfolio-network
+    command: npm start
+    environment:
+      APP_ENV: ${APP_ENV}
+
+volumes:
+  db-data:
+
+networks:
+  portfolio-network:
+    driver: bridge
