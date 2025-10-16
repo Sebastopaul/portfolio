@@ -1,0 +1,17 @@
+<div class="timeline-header">
+  <mat-button-toggle-group [(ngModel)]="filter" (change)="applyFilter()">
+    <mat-button-toggle value="all">Tout</mat-button-toggle>
+    <mat-button-toggle value="education">Formations</mat-button-toggle>
+    <mat-button-toggle value="experience">Expériences</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div class="timeline-scroll" cdkScrollable>
+  <div class="timeline-track">
+    <app-timeline-card
+      *ngFor="let item of filteredItems"
+      [item]="item"
+      (click)="openDetails(item)">
+    </app-timeline-card>
+  </div>
+</div>

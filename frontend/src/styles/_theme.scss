@@ -1,0 +1,43 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+$light-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    use-system-variables: true,
+    system-variables-prefix: md-sys-color,
+  ),
+  typography: (
+    use-system-variables: true,
+    system-variables-prefix: md-sys-typescale,
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    use-system-variables: true,
+    system-variables-prefix: md-sys-color,
+  ),
+  typography: (
+    use-system-variables: true,
+    system-variables-prefix: md-sys-typescale,
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+@include mat.core();
+
+:root {
+  @include mat.all-component-themes($light-theme);
+}
+
+.dark {
+  @include mat.all-component-themes($dark-theme);
+}
+

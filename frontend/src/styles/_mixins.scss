@@ -1,0 +1,110 @@
+@use 'sass:color';
+
+@mixin focus-ring($color, $offset: 2px, $width: 3px) {
+  outline: $width solid $color;
+  outline-offset: $offset;
+  border-radius: 4px;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+$breakpoints: (
+  'xs': 0px,
+  'sm': 600px,
+  'md': 900px,
+  'lg': 1200px,
+  'xl': 1536px
+);
+
+@mixin respond($breakpoint) {
+  $size: map-get($breakpoints, $breakpoint);
+
+  @if $size != null {
+    @media (min-width: $size) {
+      @content;
+    }
+  } @else {
+    @warn '⚠️ Breakpoint "#{$breakpoint}" non défini dans $breakpoints.';
+  }
+}
+
+@mixin transition($properties..., $duration: 150ms, $easing: ease-in-out) {
+  transition-property: $properties;
+  transition-duration: $duration;
+  transition-timing-function: $easing;
+}
+
+$elevation-colors: (
+  0: rgba(0, 0, 0, 0),
+  1: rgba(0, 0, 0, 0.05),
+  2: rgba(0, 0, 0, 0.08),
+  3: rgba(0, 0, 0, 0.11),
+  4: rgba(0, 0, 0, 0.12),
+  5: rgba(0, 0, 0, 0.14)
+);
+
+@mixin elevation($level) {
+  $color: map-get($elevation-colors, $level);
+  @if $color == null {
+    @warn '⚠️ Niveau d’élévation invalide : #{$level}. Utilise 0–5.';
+  } @else {
+    box-shadow: 0 1px 3px $color, 0 1px 2px $color;
+  }
+}
+
+@mixin ripple($color) {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $color;
+    opacity: 0;
+    transform: scale(0);
+    border-radius: inherit;
+    transition: transform 250ms ease-out, opacity 400ms ease-out;
+  }
+
+  &:active::after {
+    transform: scale(2);
+    opacity: 0.15;
+    transition: none;
+  }
+}
+
+@mixin flex-center($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin truncate($lines: 1) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin surface {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+@mixin surface-elevation($level) {
+  @include surface;
+  @include elevation($level);
+}

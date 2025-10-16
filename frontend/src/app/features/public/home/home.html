@@ -1,0 +1,46 @@
+<main class="home mat-typography">
+  <!-- HERO -->
+  <section id="hero">
+    <app-hero></app-hero>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <h2>Mon parcours</h2>
+    <app-timeline></app-timeline>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2>Mes projets</h2>
+    <div class="projects-grid">
+      <app-project-card
+        *ngFor="let project of projects"
+        [project]="project"
+        (click)="openDetails(project)">
+      </app-project-card>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2>Compétences</h2>
+    <div class="skills-container">
+      <app-skill-category
+        *ngFor="let category of skillCategories"
+        [category]="category">
+      </app-skill-category>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <app-contact-form></app-contact-form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+</main>
