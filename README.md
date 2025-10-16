@@ -139,6 +139,13 @@ make clean
 
 ---
 
+### 8. Commandes utiles
+
+- `make sync-node-modules` : synchronise les node_modules du container front et de l'hôte à l'aide du script `sync_node_modules.sh`.
+Il est recommandé de lancer cette commande à chaque installation de package front ou nettoyage du node_modules.
+
+---
+
 ### Notes
 
 Le projet est pensé pour faciliter le développement et le déploiement.

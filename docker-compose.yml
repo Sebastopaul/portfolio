@@ -41,22 +41,23 @@ services:
       SPRING_PROFILES_ACTIVE: ${APP_ENV}
 
   web-front:
-    build: ./frontend/app
+    build: ./frontend
     container_name: portfolio-web-front
     depends_on:
       - web-back
     ports:
       - "${FRONTEND_PORT}:4200"
     volumes:
-      - ./frontend/app:/usr/src/app
+      - ./frontend:/app
+      - node_modules_cache:/app/node_modules
     networks:
       - portfolio-network
-    command: npm start
     environment:
       APP_ENV: ${APP_ENV}
 
 volumes:
   db-data:
+  node_modules_cache:
 
 networks:
   portfolio-network:
