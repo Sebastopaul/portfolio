@@ -1,0 +1,12 @@
+@if (hero) {
+  <mat-card class="hero" appearance="outlined">
+    <div class="hero__content">
+      <img class="hero__photo" [src]="hero.photoUrl" [alt]="hero.name" />
+      <div class="hero__info">
+        <h1 class="hero__name">{{ hero.name }}</h1>
+        <h2 class="hero__title">{{ hero.title }}</h2>
+        <p class="hero__description">{{ hero.description }}</p>
+      </div>
+    </div>
+  </mat-card>
+}

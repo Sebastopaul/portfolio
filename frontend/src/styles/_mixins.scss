@@ -39,8 +39,8 @@ $breakpoints: (
   }
 }
 
-@mixin transition($properties..., $duration: 150ms, $easing: ease-in-out) {
-  transition-property: $properties;
+@mixin transition($properties, $duration: 150ms, $easing: ease-in-out) {
+  transition-property: if(type-of($properties) == 'list', $properties, $properties);
   transition-duration: $duration;
   transition-timing-function: $easing;
 }
