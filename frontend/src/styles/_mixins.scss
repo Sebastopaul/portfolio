@@ -1,0 +1,63 @@
+@use 'sass:color';
+@use 'sass:map';
+
+@mixin focus-ring($color, $offset: 2px, $width: 3px) {
+  outline: $width solid $color;
+  outline-offset: $offset;
+  border-radius: 4px;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+$breakpoints: (
+  'xs': 0px,
+  'sm': 600px,
+  'md': 900px,
+  'lg': 1200px,
+  'xl': 1536px
+);
+
+@mixin respond($breakpoint) {
+  $size: map.get($breakpoints, $breakpoint);
+
+  @if $size != null {
+    @media (min-width: $size) {
+      @content;
+    }
+  } @else {
+    @warn '⚠️ Breakpoint "#{$breakpoint}" non défini.';
+  }
+}
+
+@mixin transition($properties..., $duration: 150ms, $easing: ease-in-out) {
+  transition-property: $properties;
+  transition-duration: $duration;
+  transition-timing-function: $easing;
+}
+
+@mixin elevation($level) {
+  $elevation-colors: (
+    0: rgba(0, 0, 0, 0),
+    1: rgba(0, 0, 0, 0.05),
+    2: rgba(0, 0, 0, 0.08),
+    3: rgba(0, 0, 0, 0.11),
+    4: rgba(0, 0, 0, 0.12),
+    5: rgba(0, 0, 0, 0.14)
+  );
+  $color: map.get($elevation-colors, $level);
+  @if $color == null {
+    @warn '⚠️ Niveau d’élévation invalide : #{$level}. Utilise 0–5.';
+  } @else {
+    box-shadow: 0 1px 3px $color, 0 1px 2px $color;
+  }
+}
