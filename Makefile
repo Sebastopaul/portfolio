@@ -1,12 +1,16 @@
 # Variables
 BACKEND_DIR=backend
-BACKEND_IMAGE_NAME=portfolio-web-back
+BACKEND_CONTAINER=portfolio-web-back
+BACKEND_IMAGE_NAME=$(BACKEND_CONTAINER)
 BACKEND_IMAGE_TAG=latest
 BACKEND_IMAGE=$(BACKEND_IMAGE_NAME):$(BACKEND_IMAGE_TAG)
 FRONTEND_DIR=frontend
-FRONTEND_IMAGE_NAME=portfolio-web-front
+FRONTEND_CONTAINER=portfolio-web-front
+FRONTEND_IMAGE_NAME=$(FRONTEND_CONTAINER)
 FRONTEND_IMAGE_TAG=latest
 FRONTEND_IMAGE=$(FRONTEND_IMAGE_NAME):$(FRONTEND_IMAGE_TAG)
+
+DOCKER=docker
 
 # Couleurs pour l'affichage
 GREEN=\033[0;32m
@@ -50,13 +54,13 @@ start-sync: start sync-node-modules
 .PHONY: build-backend
 build-backend: clean-backend
 	@printf "${BLUE}Build de l'image backend...${NC}\n"
-	docker build -t $(BACKEND_IMAGE) $(BACKEND_DIR)
+	$(DOCKER) build -t $(BACKEND_IMAGE) $(BACKEND_DIR)
 	@printf "${GREEN}Backend prêt : $(BACKEND_IMAGE)${NC}\n"
 
 .PHONY: build-frontend
 build-frontend: clean-frontend
 	@printf "${BLUE}Build de l'image frontend...${NC}\n"
-	docker build -t $(FRONTEND_IMAGE) $(FRONTEND_DIR)
+	$(DOCKER) build -t $(FRONTEND_IMAGE) $(FRONTEND_DIR)
 	@printf "${GREEN}Frontend prêt : $(FRONTEND_IMAGE)${NC}\n"
 
 .PHONY: build
@@ -69,19 +73,19 @@ build: build-backend build-frontend
 .PHONY: clean-backend
 clean-backend:
 	@printf  "${YELLOW}Nettoyage de l'image backend Docker...${NC}\n"
-	docker rmi -f $(BACKEND_IMAGE) || true
+	$(DOCKER) rmi -f $(BACKEND_IMAGE) || true
 	@printf "${GREEN}Image backend nettoyée${NC}\n"
 
 .PHONY: clean-frontend
 clean-frontend:
 	@printf  "${YELLOW}Nettoyage de l'image frontend Docker...${NC}\n"
-	docker rmi -f $(FRONTEND_IMAGE) || true
+	$(DOCKER) rmi -f $(FRONTEND_IMAGE) || true
 	@printf "${GREEN}Image frontend nettoyée${NC}\n"
 
 .PHONY: clean
 clean: clean-backend clean-frontend
 	@printf  "${YELLOW}Nettoyage des caches Docker...${NC}\n"
-	docker system prune -f
+	$(DOCKER) system prune -f
 	@printf "${GREEN}Nettoyage terminé${NC}\n"
 
 # -------------------------------------------------------------------
@@ -91,3 +95,11 @@ clean: clean-backend clean-frontend
 .PHONY: sync-node-modules
 sync-node-modules:
 	./sync_node_modules.sh
+
+# -------------------------------------------------------------------
+# Tests
+# -------------------------------------------------------------------
+
+.PHONY: test-front
+test-front:
+	$(DOCKER) exec $(FRONTEND_CONTAINER) "npm test"
