@@ -1,0 +1,16 @@
+.timeline-item {
+  flex: 0 0 280px;
+  min-height: 180px;
+  scroll-snap-align: start;
+  transition: transform 0.2s ease;
+  background: var(--md-sys-color-surface-container);
+
+  &:hover {
+    transform: translateY(-4px);
+    background: var(--md-sys-color-surface-container-high);
+  }
+
+  mat-card-title {
+    font-weight: 600;
+  }
+}

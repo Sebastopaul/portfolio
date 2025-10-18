@@ -1,12 +1,40 @@
-.timeline-scroll {
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 1rem 0;
-}
-
-.timeline-track {
+.timeline-section {
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 2rem;
   align-items: center;
-  padding: 0 1rem;
+  text-align: center;
+  color: var(--md-sys-color-on-background);
+
+  h2 {
+    color: var(--md-sys-color-primary);
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .filter-toggle-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    ::ng-deep .mat-button-toggle {
+      border-radius: 50px;
+    }
+  }
+
+  .timeline-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 1rem;
+    width: 100%;
+
+    .empty-state {
+      color: var(--md-sys-color-outline-variant);
+      font-style: italic;
+      margin-top: 2rem;
+    }
+  }
 }
